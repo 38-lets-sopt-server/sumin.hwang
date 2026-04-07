@@ -1,9 +1,12 @@
 package org.sopt.controller;
 
 import java.util.List;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.DeletePostResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.dto.response.UpdatePostResponse;
 import org.sopt.service.PostService;
 
 public class PostController {
@@ -20,23 +23,29 @@ public class PostController {
 
     // GET /posts 📝 과제
     public List<PostResponse> getAllPosts() {
-        // TODO: postService.getAllPosts() 호출해서 반환
-        return null;
+        return postService.getAllPosts();
     }
 
     // GET /posts/{id} 📝 과제
     public PostResponse getPost(Long id) {
-        // TODO: postService.getPost(id) 호출, 예외 발생 시 null 반환
-        return null;
+        return postService.getPost(id);
     }
 
     // PUT /posts/{id} 📝 과제
-    public void updatePost(Long id, String newTitle, String newContent) {
-        // TODO: postService.updatePost() 호출, 예외 발생 시 에러 메시지 출력
+    public UpdatePostResponse updatePost(UpdatePostRequest request) {
+        try {
+            return postService.updatePost(request.getId(), request.getNewTitle(), request.getNewContent());
+        } catch (IllegalArgumentException e) {
+            return new UpdatePostResponse(request.getId(), "🚫 " + e.getMessage());
+        }
     }
 
     // DELETE /posts/{id} 📝 과제
-    public void deletePost(Long id) {
-        // TODO: postService.deletePost() 호출, 예외 발생 시 에러 메시지 출력
+    public DeletePostResponse deletePost(Long id) {
+        try {
+            return postService.deletePost(id);
+        } catch (IllegalArgumentException e) {
+            return new DeletePostResponse(id, "🚫 " + e.getMessage());
+        }
     }
 }

@@ -4,8 +4,11 @@ import java.util.List;
 import java.util.Scanner;
 import org.sopt.controller.PostController;
 import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.response.CreatePostResponse;
+import org.sopt.dto.response.DeletePostResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.dto.response.UpdatePostResponse;
 
 public class Main {
     public static void main(String[] args) {
@@ -66,12 +69,16 @@ public class Main {
                     String newTitle = scanner.nextLine();
                     System.out.print("새 내용: ");
                     String newContent = scanner.nextLine();
-                    postController.updatePost(updateId, newTitle, newContent);
+                    UpdatePostResponse updateResponse = postController.updatePost(
+                            new UpdatePostRequest(updateId, newTitle, newContent)
+                    );
+                    System.out.println(updateResponse.getMessage());
                     break;
 
                 case 5:
                     System.out.print("삭제할 게시글 ID: ");
-                    postController.deletePost(scanner.nextLong());
+                    DeletePostResponse deleteResponse = postController.deletePost(scanner.nextLong());
+                    System.out.println(deleteResponse.getMessage());
                     scanner.nextLine();
                     break;
 
