@@ -8,6 +8,7 @@ import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.DeletePostResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.dto.response.UpdatePostResponse;
+import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
 
 public class PostService {
@@ -52,13 +53,14 @@ public class PostService {
 
     // DELETE 📝 과제
     public DeletePostResponse deletePost(Long id) {
-        postRepository.deleteById(id);
+        Post post = findOrThrow(id);
+        postRepository.deleteById(post.getId());
 
         return new DeletePostResponse(id, "게시글 삭제 완료!");
     }
 
     private Post findOrThrow(Long id) {
         return postRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
+                .orElseThrow(PostNotFoundException::new);
     }
 }
