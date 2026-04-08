@@ -84,7 +84,7 @@ public class MainView {
         System.out.print("작성자: ");
         String author = scanner.nextLine();
 
-        return new CreatePostRequest(title, content, author);
+        return CreatePostRequest.of(title, content, author);
     }
 
     private Long getPostIdInputForDetail() {
@@ -101,7 +101,7 @@ public class MainView {
         System.out.print("새 내용: ");
         String newContent = scanner.nextLine();
 
-        return new UpdatePostRequest(updateId, newTitle, newContent);
+        return UpdatePostRequest.of(updateId, newTitle, newContent);
     }
 
     private Long getPostIdInputForDelete() {

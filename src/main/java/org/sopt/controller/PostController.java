@@ -1,6 +1,5 @@
 package org.sopt.controller;
 
-import java.util.List;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.CommonResponse;
