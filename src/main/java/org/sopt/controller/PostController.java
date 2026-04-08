@@ -3,49 +3,41 @@ package org.sopt.controller;
 import java.util.List;
 import org.sopt.dto.request.UpdatePostRequest;
 import org.sopt.dto.request.CreatePostRequest;
+import org.sopt.dto.response.CommonResponse;
 import org.sopt.dto.response.CreatePostResponse;
 import org.sopt.dto.response.DeletePostResponse;
+import org.sopt.dto.response.GetAllPostsResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.dto.response.UpdatePostResponse;
+import org.sopt.enums.SuccessMessage;
 import org.sopt.service.PostService;
 
 public class PostController {
     private final PostService postService = new PostService();
 
     // POST /posts 
-    public CreatePostResponse createPost(CreatePostRequest request) {
-        try {
-            return postService.createPost(request);
-        } catch (IllegalArgumentException e) {
-            return new CreatePostResponse(null, "🚫 " + e.getMessage());
-        }
+    public CommonResponse<CreatePostResponse> createPost(CreatePostRequest request) {
+        return CommonResponse.success(SuccessMessage.POST_CREATED, postService.createPost(request));
     }
 
     // GET /posts 📝 과제
-    public List<PostResponse> getAllPosts() {
-        return postService.getAllPosts();
+    public CommonResponse<GetAllPostsResponse> getAllPosts() {
+        return CommonResponse.success(SuccessMessage.POST_FOUND, postService.getAllPosts());
     }
 
     // GET /posts/{id} 📝 과제
-    public PostResponse getPost(Long id) {
-        return postService.getPost(id);
+    public CommonResponse<PostResponse> getPost(Long id) {
+        return CommonResponse.success(SuccessMessage.POST_FOUND, postService.getPost(id));
     }
 
     // PUT /posts/{id} 📝 과제
-    public UpdatePostResponse updatePost(UpdatePostRequest request) {
-        try {
-            return postService.updatePost(request.getId(), request.getNewTitle(), request.getNewContent());
-        } catch (IllegalArgumentException e) {
-            return new UpdatePostResponse(request.getId(), "🚫 " + e.getMessage());
-        }
+    public CommonResponse<UpdatePostResponse> updatePost(UpdatePostRequest request) {
+        return CommonResponse.success(SuccessMessage.POST_UPDATED,
+                postService.updatePost(request.id(), request.newTitle(), request.newContent()));
     }
 
     // DELETE /posts/{id} 📝 과제
-    public DeletePostResponse deletePost(Long id) {
-        try {
-            return postService.deletePost(id);
-        } catch (IllegalArgumentException e) {
-            return new DeletePostResponse(id, "🚫 " + e.getMessage());
-        }
+    public CommonResponse<DeletePostResponse> deletePost(Long id) {
+        return CommonResponse.success(SuccessMessage.POST_DELETED, postService.deletePost(id));
     }
 }

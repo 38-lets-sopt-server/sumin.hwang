@@ -2,26 +2,23 @@ package org.sopt.dto.response;
 
 import org.sopt.domain.Post;
 
-public class PostResponse {
-    private final Long id;
-    private final String title;
-    private final String content;
-    private final String author;
-    private final String createdAt;
+public record PostResponse(
+        Long id,
+        String title,
+        String content,
+        String author,
+        String createdAt
+) {
 
-    public PostResponse(Post post) {
-        this.id = post.getId();
-        this.title = post.getTitle();
-        this.content = post.getContent();
-        this.author = post.getAuthor();
-        this.createdAt = post.getCreatedAt();
+    public static PostResponse from(Post post) {
+        return new PostResponse(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthor(),
+                post.getCreatedAt()
+        );
     }
-
-    public Long getId() { return id; }
-    public String getTitle() { return title; }
-    public String getContent() { return content; }
-    public String getAuthor() { return author; }
-    public String getCreatedAt() { return createdAt; }
 
     @Override
     public String toString() {
