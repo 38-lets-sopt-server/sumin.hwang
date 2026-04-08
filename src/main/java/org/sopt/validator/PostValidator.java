@@ -5,9 +5,15 @@ import org.sopt.exception.CustomException;
 
 public class PostValidator {
 
+    private static final int MAX_TITLE_LENGTH = 50;
+
     public static void validateTitle(String title) {
         if (title == null || title.isBlank()) {
             throw new CustomException(ErrorMessage.POST_TITLE_REQUIRED);
+        }
+
+        if (title.length() > MAX_TITLE_LENGTH) {
+            throw new CustomException(ErrorMessage.POST_TITLE_TOO_LONG);
         }
     }
 
