@@ -13,6 +13,10 @@ public record CommonResponse<T>(
         return new CommonResponse<>(true, null, successMessage.getClientMessage(), data);
     }
 
+    public static CommonResponse<Void> success(SuccessMessage successMessage) {
+        return success(successMessage, null);
+    }
+
     public static CommonResponse<Void> error(ErrorMessage errorMessage) {
         return new CommonResponse<>(false, errorMessage.name(), errorMessage.getClientMessage(), null);
     }
