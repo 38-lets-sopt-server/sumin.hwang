@@ -1,18 +1,18 @@
 package org.sopt.dto.request;
 
+import org.sopt.validator.PostValidator;
+
 // 게시글 작성 요청 (클라이언트 → 서버)
-public class CreatePostRequest {
-    private final String title;
-    private final String content;
-    private final String author;
+public record CreatePostRequest(
+        String title,
+        String content,
+        String author
+) {
 
-    public CreatePostRequest(String title, String content, String author) {
-        this.title = title;
-        this.content = content;
-        this.author = author;
+    public static CreatePostRequest of(String title, String content, String author) {
+        PostValidator.validateTitle(title);
+        PostValidator.validateContent(content);
+
+        return new CreatePostRequest(title, content, author);
     }
-
-    public String getTitle() { return title; }
-    public String getContent() { return content; }
-    public String getAuthor() { return author; }
 }
