@@ -14,7 +14,7 @@ public record ApiResponse<T>(
     private static final int SUCCESS_STATUS = 200;
 
     public static <T> ApiResponse<T> success(SuccessMessage successMessage, T data) {
-        return new ApiResponse<>(200, "SUCCESS", successMessage.getClientMessage(), data);
+        return new ApiResponse<>(SUCCESS_STATUS, SUCCESS_CODE, successMessage.getClientMessage(), data);
     }
 
     public static ApiResponse<Void> success(SuccessMessage successMessage) {
