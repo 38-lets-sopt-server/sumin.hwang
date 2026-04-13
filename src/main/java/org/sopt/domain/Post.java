@@ -1,11 +1,11 @@
 package org.sopt.domain;
 
 public class Post {
-    private Long id;          // 게시글 상세 화면 — 특정 게시글 식별용
+    private final Long id;          // 게시글 상세 화면 — 특정 게시글 식별용
     private String title;     // 목록, 상세, 글쓰기 화면 — 제목
     private String content;   // 목록(미리보기), 상세(전체) 화면 — 내용
-    private String author;    // 목록, 상세 화면 — 글쓴이
-    private String createdAt; // 목록, 상세 화면 — 작성 시각
+    private final String author;    // 목록, 상세 화면 — 글쓴이
+    private final String createdAt; // 목록, 상세 화면 — 작성 시각
 
     public Post(Long id, String title, String content, String author, String createdAt) {
         this.id = id;
@@ -24,9 +24,5 @@ public class Post {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
-    }
-
-    public String getInfo() {
-        return "[" + id + "] " + title + " - " + author + " (" + createdAt + ")\n" + content;
     }
 }
