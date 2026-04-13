@@ -1,10 +1,12 @@
 package org.sopt.controller;
 
+import java.util.List;
 import org.sopt.controller.dto.request.UpdatePostRequest;
 import org.sopt.controller.dto.request.CreatePostRequest;
 import org.sopt.controller.dto.response.ApiResponse;
 import org.sopt.controller.dto.response.GetAllPostsResponse;
 import org.sopt.controller.dto.response.PostResponse;
+import org.sopt.domain.Post;
 import org.sopt.enums.BoardType;
 import org.sopt.enums.SuccessMessage;
 import org.sopt.service.PostService;
@@ -31,7 +33,7 @@ public class PostController {
 
     @PostMapping
     public ApiResponse<Void> createPost(@RequestBody CreatePostRequest request) {
-        postService.createPost(request);
+        postService.createPost(request.toCommand());
         return ApiResponse.success(SuccessMessage.POST_CREATED);
     }
 
@@ -41,20 +43,22 @@ public class PostController {
             @RequestParam int page,
             @RequestParam int size
     ) {
-        return ApiResponse.success(
-                SuccessMessage.POST_FOUND,
-                postService.getAllPosts(PaginationCommand.of(page, size), BoardType.valueOf(boardType.toUpperCase()))
-        );
+        List<Post> posts = postService.getAllPosts(PaginationCommand.of(page, size),
+                BoardType.valueOf(boardType.toUpperCase()));
+
+        return ApiResponse.success(SuccessMessage.POST_FOUND, GetAllPostsResponse.of(posts));
     }
 
     @GetMapping("/{postId}")
     public ApiResponse<PostResponse> getPost(@PathVariable Long postId) {
-        return ApiResponse.success(SuccessMessage.POST_FOUND, postService.getPost(postId));
+        Post post = postService.findOrThrow(postId);
+
+        return ApiResponse.success(SuccessMessage.POST_FOUND, PostResponse.from(post));
     }
 
     @PutMapping("/{postId}")
     public ApiResponse<Void> updatePost(@PathVariable Long postId, UpdatePostRequest request) {
-        postService.updatePost(postId, request.newTitle(), request.newContent());
+        postService.updatePost(postId, request.toCommand());
         return ApiResponse.success(SuccessMessage.POST_UPDATED);
     }
 

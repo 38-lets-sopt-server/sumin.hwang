@@ -3,13 +3,12 @@ package org.sopt.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.sopt.domain.Post;
-import org.sopt.controller.dto.request.CreatePostRequest;
-import org.sopt.controller.dto.response.GetAllPostsResponse;
-import org.sopt.controller.dto.response.PostResponse;
 import org.sopt.enums.BoardType;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
+import org.sopt.service.vo.CreatePostCommand;
 import org.sopt.service.vo.PaginationCommand;
+import org.sopt.service.vo.UpdatePostCommand;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,50 +20,42 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public void createPost(CreatePostRequest request) {
+    public void createPost(CreatePostCommand command) {
         LocalDateTime createdAt = LocalDateTime.now();
 
         Post post = Post.create(
                 postRepository.generateId(),
-                request.title(),
-                request.content(),
-                request.author(),
-                request.boardType(),
+                command.title(),
+                command.content(),
+                command.author(),
+                command.boardType(),
                 createdAt
         );
 
         postRepository.save(post);
     }
 
-    public GetAllPostsResponse getAllPosts(PaginationCommand pagination, BoardType boardType) {
+    public List<Post> getAllPosts(PaginationCommand pagination, BoardType boardType) {
         int page = pagination.page();
         int size = pagination.size();
 
-        List<Post> posts = (boardType != null) ?
+        return (boardType != null) ?
                 postRepository.findAllByBoardType(boardType, page, size)
                 : postRepository.findAll(page, size);
-
-        return GetAllPostsResponse.of(posts);
     }
 
-    public PostResponse getPost(Long id) {
-        Post post = findOrThrow(id);
-
-        return PostResponse.from(post);
+    public Post findOrThrow(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(PostNotFoundException::new);
     }
 
-    public void updatePost(Long id, String newTitle, String newContent) {
+    public void updatePost(Long id, UpdatePostCommand command) {
         Post post = findOrThrow(id);
-        post.update(newTitle, newContent);
+        post.update(command.newTitle(), command.newContent());
     }
 
     public void deletePost(Long id) {
         Post post = findOrThrow(id);
         postRepository.deleteById(post.getId());
-    }
-
-    private Post findOrThrow(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(PostNotFoundException::new);
     }
 }

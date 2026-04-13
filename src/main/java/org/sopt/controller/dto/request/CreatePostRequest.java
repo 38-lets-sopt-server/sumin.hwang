@@ -1,12 +1,16 @@
 package org.sopt.controller.dto.request;
 
 import org.sopt.enums.BoardType;
+import org.sopt.service.vo.CreatePostCommand;
 
-// 게시글 작성 요청 (클라이언트 → 서버)
 public record CreatePostRequest(
         String title,
         String content,
         String author,
         BoardType boardType
 ) {
+
+    public CreatePostCommand toCommand() {
+        return new CreatePostCommand(title, content, author, boardType);
+    }
 }
