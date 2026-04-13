@@ -3,6 +3,7 @@ package org.sopt.repository;
 import java.util.List;
 import java.util.Optional;
 import org.sopt.domain.Post;
+import org.sopt.enums.BoardType;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -17,4 +18,6 @@ public interface PostRepository {
     void deleteById(Long id);
 
     Long generateId();
+
+    List<Post> findAllByBoardType(BoardType boardType, int page, int size);
 }

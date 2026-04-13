@@ -5,6 +5,7 @@ import org.sopt.dto.request.CreatePostRequest;
 import org.sopt.dto.response.ApiResponse;
 import org.sopt.dto.response.GetAllPostsResponse;
 import org.sopt.dto.response.PostResponse;
+import org.sopt.enums.BoardType;
 import org.sopt.enums.SuccessMessage;
 import org.sopt.service.PostService;
 import org.sopt.vo.PaginationCommand;
@@ -36,10 +37,14 @@ public class PostController {
 
     @GetMapping
     public ApiResponse<GetAllPostsResponse> getAllPosts(
+            @RequestParam(required = false) String boardType,
             @RequestParam int page,
             @RequestParam int size
     ) {
-        return ApiResponse.success(SuccessMessage.POST_FOUND, postService.getAllPosts(PaginationCommand.of(page, size)));
+        return ApiResponse.success(
+                SuccessMessage.POST_FOUND,
+                postService.getAllPosts(PaginationCommand.of(page, size), BoardType.valueOf(boardType.toUpperCase()))
+        );
     }
 
     @GetMapping("/{postId}")

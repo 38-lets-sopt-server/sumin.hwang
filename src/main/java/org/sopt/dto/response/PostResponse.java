@@ -2,12 +2,14 @@ package org.sopt.dto.response;
 
 import java.time.LocalDateTime;
 import org.sopt.domain.Post;
+import org.sopt.enums.BoardType;
 
 public record PostResponse(
         Long id,
         String title,
         String content,
         String author,
+        BoardType boardType,
         LocalDateTime createdAt
 ) {
 
@@ -17,6 +19,7 @@ public record PostResponse(
                 post.getTitle(),
                 post.getContent(),
                 post.getAuthor(),
+                post.getBoardType(),
                 post.getCreatedAt()
         );
     }
