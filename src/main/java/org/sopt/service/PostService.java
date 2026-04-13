@@ -7,6 +7,7 @@ import org.sopt.dto.response.GetAllPostsResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
+import org.sopt.vo.PaginationCommand;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,6 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    // CREATE
     public void createPost(CreatePostRequest request) {
         String createdAt = LocalDateTime.now().toString();
         Post post = new Post(
@@ -32,25 +32,21 @@ public class PostService {
         postRepository.save(post);
     }
 
-    // READ - 전체 📝 과제
-    public GetAllPostsResponse getAllPosts() {
-        return GetAllPostsResponse.of(postRepository.findAll());
+    public GetAllPostsResponse getAllPosts(PaginationCommand pagination) {
+        return GetAllPostsResponse.of(postRepository.findAll(pagination.page(), pagination.size()));
     }
 
-    // READ - 단건 📝 과제
     public PostResponse getPost(Long id) {
         Post post = findOrThrow(id);
 
         return PostResponse.from(post);
     }
 
-    // UPDATE 📝 과제
     public void updatePost(Long id, String newTitle, String newContent) {
         Post post = findOrThrow(id);
         post.update(newTitle, newContent);
     }
 
-    // DELETE 📝 과제
     public void deletePost(Long id) {
         Post post = findOrThrow(id);
         postRepository.deleteById(post.getId());

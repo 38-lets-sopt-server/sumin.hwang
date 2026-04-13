@@ -15,9 +15,11 @@ public class PostInMemoryRepository implements PostRepository {
         return post;
     }
 
-    public List<Post> findAll() {
+    public List<Post> findAll(int page, int size) {
         return posts.values()
                 .stream()
+                .skip((long) page * size)
+                .limit(size)
                 .toList();
     }
 
