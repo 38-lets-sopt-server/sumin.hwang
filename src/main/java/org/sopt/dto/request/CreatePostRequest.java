@@ -8,11 +8,4 @@ public record CreatePostRequest(
         String content,
         String author
 ) {
-
-    public static CreatePostRequest of(String title, String content, String author) {
-        PostValidator.validateTitle(title);
-        PostValidator.validateContent(content);
-
-        return new CreatePostRequest(title, content, author);
-    }
 }

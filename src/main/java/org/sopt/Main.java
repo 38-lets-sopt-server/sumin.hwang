@@ -1,9 +1,11 @@
 package org.sopt;
 
-import org.sopt.view.MainView;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        MainView.getInstance().start();
+        SpringApplication.run(Main.class, args);
     }
 }

@@ -19,9 +19,4 @@ public record PostResponse(
                 post.getCreatedAt()
         );
     }
-
-    @Override
-    public String toString() {
-        return "[" + id + "] " + title + " - " + author + " (" + createdAt + ")\n" + content;
-    }
 }

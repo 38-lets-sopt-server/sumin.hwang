@@ -1,35 +1,20 @@
 package org.sopt.repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.sopt.domain.Post;
+import org.springframework.stereotype.Repository;
 
-public class PostRepository {
-    private final Map<Long, Post> posts = new HashMap<>();
-    private Long nextId = 1L;
+@Repository
+public interface PostRepository {
 
-    public Post save(Post post) {
-        posts.put(post.getId(), post);
-        return post;
-    }
+    Post save(Post post);
 
-    public List<Post> findAll() {
-        return posts.values()
-                .stream()
-                .toList();
-    }
+    List<Post> findAll();
 
-    public Optional<Post> findById(Long id) {
-        return Optional.ofNullable(posts.get(id));
-    }
+    Optional<Post> findById(Long id);
 
-    public boolean deleteById(Long id) {
-        return posts.remove(id) != null;
-    }
+    void deleteById(Long id);
 
-    public Long generateId() {
-        return nextId++;
-    }
+    Long generateId();
 }

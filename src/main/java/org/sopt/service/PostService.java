@@ -7,9 +7,16 @@ import org.sopt.dto.response.GetAllPostsResponse;
 import org.sopt.dto.response.PostResponse;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PostService {
-    private final PostRepository postRepository = new PostRepository();
+
+    private final PostRepository postRepository;
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
 
     // CREATE
     public void createPost(CreatePostRequest request) {
