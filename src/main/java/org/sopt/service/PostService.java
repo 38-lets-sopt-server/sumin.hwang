@@ -3,13 +3,13 @@ package org.sopt.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.sopt.domain.Post;
-import org.sopt.dto.request.CreatePostRequest;
-import org.sopt.dto.response.GetAllPostsResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.controller.dto.request.CreatePostRequest;
+import org.sopt.controller.dto.response.GetAllPostsResponse;
+import org.sopt.controller.dto.response.PostResponse;
 import org.sopt.enums.BoardType;
 import org.sopt.exception.PostNotFoundException;
 import org.sopt.repository.PostRepository;
-import org.sopt.vo.PaginationCommand;
+import org.sopt.service.vo.PaginationCommand;
 import org.springframework.stereotype.Service;
 
 @Service

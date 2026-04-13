@@ -1,4 +1,4 @@
-package org.sopt.vo;
+package org.sopt.service.vo;
 
 import org.springframework.util.Assert;
 

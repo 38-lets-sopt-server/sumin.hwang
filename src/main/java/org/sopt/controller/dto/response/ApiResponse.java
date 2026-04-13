@@ -1,4 +1,4 @@
-package org.sopt.dto.response;
+package org.sopt.controller.dto.response;
 
 import org.sopt.enums.ErrorMessage;
 import org.sopt.enums.SuccessMessage;

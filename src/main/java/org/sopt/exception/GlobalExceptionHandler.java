@@ -1,6 +1,6 @@
 package org.sopt.exception;
 
-import org.sopt.dto.response.ApiResponse;
+import org.sopt.controller.dto.response.ApiResponse;
 import org.sopt.enums.ErrorMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

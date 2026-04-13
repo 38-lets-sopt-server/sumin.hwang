@@ -1,14 +1,14 @@
 package org.sopt.controller;
 
-import org.sopt.dto.request.UpdatePostRequest;
-import org.sopt.dto.request.CreatePostRequest;
-import org.sopt.dto.response.ApiResponse;
-import org.sopt.dto.response.GetAllPostsResponse;
-import org.sopt.dto.response.PostResponse;
+import org.sopt.controller.dto.request.UpdatePostRequest;
+import org.sopt.controller.dto.request.CreatePostRequest;
+import org.sopt.controller.dto.response.ApiResponse;
+import org.sopt.controller.dto.response.GetAllPostsResponse;
+import org.sopt.controller.dto.response.PostResponse;
 import org.sopt.enums.BoardType;
 import org.sopt.enums.SuccessMessage;
 import org.sopt.service.PostService;
-import org.sopt.vo.PaginationCommand;
+import org.sopt.service.vo.PaginationCommand;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

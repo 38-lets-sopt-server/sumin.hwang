@@ -1,4 +1,4 @@
-package org.sopt.dto.response;
+package org.sopt.controller.dto.response;
 
 import java.time.LocalDateTime;
 import org.sopt.domain.Post;
