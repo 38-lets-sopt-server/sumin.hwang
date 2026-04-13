@@ -20,8 +20,9 @@ public class PostService {
     }
 
     public void createPost(CreatePostRequest request) {
-        String createdAt = LocalDateTime.now().toString();
-        Post post = new Post(
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        Post post = Post.create(
                 postRepository.generateId(),
                 request.title(),
                 request.content(),

@@ -1,5 +1,6 @@
 package org.sopt.dto.response;
 
+import java.time.LocalDateTime;
 import org.sopt.domain.Post;
 
 public record PostResponse(
@@ -7,7 +8,7 @@ public record PostResponse(
         String title,
         String content,
         String author,
-        String createdAt
+        LocalDateTime createdAt
 ) {
 
     public static PostResponse from(Post post) {
