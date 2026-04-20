@@ -11,11 +11,8 @@ public record ApiResponse<T>(
         T data
 ) {
 
-    private static final String SUCCESS_CODE = "SUCCESS";
-    private static final int SUCCESS_STATUS = 200;
-
     public static <T> ApiResponse<T> success(SuccessCode successCode, T data) {
-        return new ApiResponse<>(SUCCESS_STATUS, SUCCESS_CODE, successCode.getMessage(), data);
+        return new ApiResponse<>(200, successCode.name(), successCode.getMessage(), data);
     }
 
     public static ApiResponse<Void> success(SuccessCode successCode) {
