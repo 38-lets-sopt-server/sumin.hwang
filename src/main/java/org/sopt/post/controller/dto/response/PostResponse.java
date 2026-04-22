@@ -10,6 +10,8 @@ public record PostResponse(
         String content,
         String author,
         BoardType boardType,
+        boolean isAnonymous,
+        boolean isQuestion,
         LocalDateTime createdAt
 ) {
 
@@ -20,6 +22,8 @@ public record PostResponse(
                 post.getContent(),
                 post.getAuthor(),
                 post.getBoardType(),
+                post.isAnonymous(),
+                post.isQuestion(),
                 post.getCreatedAt()
         );
     }

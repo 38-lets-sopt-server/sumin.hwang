@@ -7,10 +7,12 @@ public record CreatePostRequest(
         String title,
         String content,
         String author,
-        BoardType boardType
+        BoardType boardType,
+        boolean isAnonymous,
+        boolean isQuestion
 ) {
 
     public CreatePostCommand toCommand() {
-        return CreatePostCommand.of(title, content, author, boardType);
+        return CreatePostCommand.of(title, content, author, boardType, isAnonymous, isQuestion);
     }
 }

@@ -4,10 +4,11 @@ import org.sopt.post.service.vo.UpdatePostCommand;
 
 public record UpdatePostRequest(
         String newTitle,
-        String newContent
+        String newContent,
+        boolean isAnonymous
 ) {
 
     public UpdatePostCommand toCommand() {
-        return UpdatePostCommand.of(newTitle, newContent);
+        return UpdatePostCommand.of(newTitle, newContent, isAnonymous);
     }
 }

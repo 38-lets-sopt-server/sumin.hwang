@@ -29,6 +29,8 @@ public class PostService {
                 command.content(),
                 command.author(),
                 command.boardType(),
+                command.isAnonymous(),
+                command.isQuestion(),
                 createdAt
         );
 
@@ -51,7 +53,7 @@ public class PostService {
 
     public void updatePost(Long id, UpdatePostCommand command) {
         Post post = findOrThrow(id);
-        post.update(command.newTitle(), command.newContent());
+        post.update(command.newTitle(), command.newContent(), command.isAnonymous());
     }
 
     public void deletePost(Long id) {
