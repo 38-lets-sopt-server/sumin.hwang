@@ -11,6 +11,6 @@ public record CreatePostRequest(
 ) {
 
     public CreatePostCommand toCommand() {
-        return new CreatePostCommand(title, content, author, boardType);
+        return CreatePostCommand.of(title, content, author, boardType);
     }
 }

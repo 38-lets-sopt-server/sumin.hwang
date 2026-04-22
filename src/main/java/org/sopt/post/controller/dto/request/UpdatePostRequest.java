@@ -8,6 +8,6 @@ public record UpdatePostRequest(
 ) {
 
     public UpdatePostCommand toCommand() {
-        return new UpdatePostCommand(newTitle, newContent);
+        return UpdatePostCommand.of(newTitle, newContent);
     }
 }
