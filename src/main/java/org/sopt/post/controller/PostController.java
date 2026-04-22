@@ -39,9 +39,9 @@ public class PostController {
 
     @GetMapping
     public ApiResponse<GetAllPostsResponse> getAllPosts(
-            @RequestParam(required = false) String boardType,
-            @RequestParam int page,
-            @RequestParam int size
+            @RequestParam(required = false, defaultValue = "FREE") String boardType,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
     ) {
         List<Post> posts = postService.getAllPosts(
                 PaginationCommand.of(page, size),
@@ -59,7 +59,7 @@ public class PostController {
     }
 
     @PutMapping("/{postId}")
-    public ApiResponse<Void> updatePost(@PathVariable Long postId, UpdatePostRequest request) {
+    public ApiResponse<Void> updatePost(@PathVariable Long postId, @RequestBody UpdatePostRequest request) {
         postService.updatePost(postId, request.toCommand());
         return ApiResponse.success(PostSuccessCode.POST_UPDATED);
     }
