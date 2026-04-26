@@ -16,11 +16,13 @@ public record PostResponse(
 ) {
 
     public static PostResponse from(Post post) {
+        Long authorId = (post.isAnonymous()) ? null : post.getAuthor().getId();
+
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getAuthor().getId(),
+                authorId,
                 post.getBoardType(),
                 post.isAnonymous(),
                 post.isQuestion(),

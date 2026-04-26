@@ -2,7 +2,7 @@ package org.sopt.common.code;
 
 import org.springframework.http.HttpStatus;
 
-public enum GlobalErrorCode {
+public enum GlobalErrorCode implements ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "오류가 발생했습니다. 다시 시도해 주세요.");
 
     private final HttpStatus status;
