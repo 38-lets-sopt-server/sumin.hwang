@@ -11,11 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import org.sopt.common.entity.BaseTimeEntity;
 import org.sopt.post.enums.BoardType;
 import org.sopt.user.entity.User;
 
 @Entity
-public class Post {
+public class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,9 +40,6 @@ public class Post {
     @Column(name = "is_question", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isQuestion;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-
     protected Post() {}
 
     public Post(
@@ -50,8 +48,7 @@ public class Post {
             User author,
             BoardType boardType,
             boolean isAnonymous,
-            boolean isQuestion,
-            LocalDateTime createdAt
+            boolean isQuestion
     ) {
         this.title = title;
         this.content = content;
@@ -59,7 +56,6 @@ public class Post {
         this.boardType = boardType;
         this.isAnonymous = isAnonymous;
         this.isQuestion = isQuestion;
-        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -90,20 +86,15 @@ public class Post {
         return isQuestion;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public static Post create(
             String title,
             String content,
             User author,
             BoardType boardType,
             boolean isAnonymous,
-            boolean isQuestion,
-            LocalDateTime createdAt
+            boolean isQuestion
     ) {
-        return new Post(title, content, author, boardType, isAnonymous, isQuestion, createdAt);
+        return new Post(title, content, author, boardType, isAnonymous, isQuestion);
     }
 
     public void update(String title, String content, boolean isAnonymous) {

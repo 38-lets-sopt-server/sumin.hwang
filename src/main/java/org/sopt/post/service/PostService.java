@@ -33,16 +33,13 @@ public class PostService {
         User user = userRepository.findById(command.authorId())
                 .orElse(null);
 
-        LocalDateTime createdAt = LocalDateTime.now();
-
         Post post = Post.create(
                 command.title(),
                 command.content(),
                 user,
                 command.boardType(),
                 command.isAnonymous(),
-                command.isQuestion(),
-                createdAt
+                command.isQuestion()
         );
 
         postRepository.save(post);
