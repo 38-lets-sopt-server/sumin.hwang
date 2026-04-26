@@ -1,29 +1,58 @@
-package org.sopt.post.domain;
+package org.sopt.post.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import org.sopt.post.enums.BoardType;
+import org.sopt.user.entity.User;
 
+@Entity
 public class Post {
-    private final Long id;          // 게시글 상세 화면 — 특정 게시글 식별용
-    private String title;     // 목록, 상세, 글쓰기 화면 — 제목
-    private String content;   // 목록(미리보기), 상세(전체) 화면 — 내용
-    private final String author; // 목록, 상세 화면 — 글쓴이
-    private final BoardType boardType;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "board_type", nullable = false)
+    private BoardType boardType;
+
+    @Column(name = "is_anonymous", nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isAnonymous;
-    private final boolean isQuestion;// 게시판 종류 - 자유, 핫게, 비밀
-    private final LocalDateTime createdAt; // 목록, 상세 화면 — 작성 시각
+
+    @Column(name = "is_question", nullable = false, columnDefinition = "TINYINT(1)")
+    private boolean isQuestion;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    protected Post() {}
 
     public Post(
-            Long id,
             String title,
             String content,
-            String author,
+            User author,
             BoardType boardType,
             boolean isAnonymous,
             boolean isQuestion,
             LocalDateTime createdAt
     ) {
-        this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
@@ -45,7 +74,7 @@ public class Post {
         return content;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 
@@ -66,16 +95,15 @@ public class Post {
     }
 
     public static Post create(
-            Long id,
             String title,
             String content,
-            String author,
+            User author,
             BoardType boardType,
             boolean isAnonymous,
             boolean isQuestion,
             LocalDateTime createdAt
     ) {
-        return new Post(id, title, content, author, boardType, isAnonymous, isQuestion, createdAt);
+        return new Post(title, content, author, boardType, isAnonymous, isQuestion, createdAt);
     }
 
     public void update(String title, String content, boolean isAnonymous) {

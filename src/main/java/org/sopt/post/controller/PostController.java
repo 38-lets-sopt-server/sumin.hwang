@@ -6,7 +6,7 @@ import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.ApiResponse;
 import org.sopt.post.controller.dto.response.GetAllPostsResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
-import org.sopt.post.domain.Post;
+import org.sopt.post.entity.Post;
 import org.sopt.post.enums.BoardType;
 import org.sopt.post.code.PostSuccessCode;
 import org.sopt.post.service.PostService;

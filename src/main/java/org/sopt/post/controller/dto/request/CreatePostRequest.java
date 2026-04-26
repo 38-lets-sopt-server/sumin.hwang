@@ -6,13 +6,13 @@ import org.sopt.post.service.vo.CreatePostCommand;
 public record CreatePostRequest(
         String title,
         String content,
-        String author,
+        Long authorId,
         BoardType boardType,
         boolean isAnonymous,
         boolean isQuestion
 ) {
 
     public CreatePostCommand toCommand() {
-        return CreatePostCommand.of(title, content, author, boardType, isAnonymous, isQuestion);
+        return CreatePostCommand.of(title, content, authorId, boardType, isAnonymous, isQuestion);
     }
 }

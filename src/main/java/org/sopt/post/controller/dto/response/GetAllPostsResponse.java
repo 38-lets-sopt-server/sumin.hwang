@@ -1,7 +1,7 @@
 package org.sopt.post.controller.dto.response;
 
 import java.util.List;
-import org.sopt.post.domain.Post;
+import org.sopt.post.entity.Post;
 
 public record GetAllPostsResponse(
         List<PostResponse> posts
