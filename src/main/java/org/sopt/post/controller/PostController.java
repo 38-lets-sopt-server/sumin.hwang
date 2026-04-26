@@ -4,7 +4,7 @@ import java.util.List;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
-import org.sopt.post.controller.dto.response.GetAllPostsResponse;
+import org.sopt.post.controller.dto.response.PostListResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
 import org.sopt.post.entity.Post;
 import org.sopt.post.enums.BoardType;
@@ -38,7 +38,7 @@ public class PostController {
     }
 
     @GetMapping
-    public CommonResponse<GetAllPostsResponse> getAllPosts(
+    public CommonResponse<PostListResponse> getAllPosts(
             @RequestParam(required = false, defaultValue = "FREE") String boardType,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
@@ -48,7 +48,7 @@ public class PostController {
                 BoardType.valueOf(boardType.toUpperCase())
         );
 
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, GetAllPostsResponse.of(posts));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts));
     }
 
     @GetMapping("/{postId}")
