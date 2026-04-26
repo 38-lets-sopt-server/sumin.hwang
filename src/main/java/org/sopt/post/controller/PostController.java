@@ -3,7 +3,7 @@ package org.sopt.post.controller;
 import java.util.List;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
-import org.sopt.common.dto.ApiResponse;
+import org.sopt.common.dto.CommonResponse;
 import org.sopt.post.controller.dto.response.GetAllPostsResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
 import org.sopt.post.entity.Post;
@@ -32,13 +32,13 @@ public class PostController {
     }
 
     @PostMapping
-    public ApiResponse<Void> createPost(@RequestBody CreatePostRequest request) {
+    public CommonResponse<Void> createPost(@RequestBody CreatePostRequest request) {
         postService.createPost(request.toCommand());
-        return ApiResponse.success(PostSuccessCode.POST_CREATED);
+        return CommonResponse.success(PostSuccessCode.POST_CREATED);
     }
 
     @GetMapping
-    public ApiResponse<GetAllPostsResponse> getAllPosts(
+    public CommonResponse<GetAllPostsResponse> getAllPosts(
             @RequestParam(required = false, defaultValue = "FREE") String boardType,
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
@@ -48,25 +48,25 @@ public class PostController {
                 BoardType.valueOf(boardType.toUpperCase())
         );
 
-        return ApiResponse.success(PostSuccessCode.POST_FOUND, GetAllPostsResponse.of(posts));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, GetAllPostsResponse.of(posts));
     }
 
     @GetMapping("/{postId}")
-    public ApiResponse<PostResponse> getPost(@PathVariable Long postId) {
+    public CommonResponse<PostResponse> getPost(@PathVariable Long postId) {
         Post post = postService.findOrThrow(postId);
 
-        return ApiResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post));
     }
 
     @PutMapping("/{postId}")
-    public ApiResponse<Void> updatePost(@PathVariable Long postId, @RequestBody UpdatePostRequest request) {
+    public CommonResponse<Void> updatePost(@PathVariable Long postId, @RequestBody UpdatePostRequest request) {
         postService.updatePost(postId, request.toCommand());
-        return ApiResponse.success(PostSuccessCode.POST_UPDATED);
+        return CommonResponse.success(PostSuccessCode.POST_UPDATED);
     }
 
     @DeleteMapping("/{postId}")
-    public ApiResponse<Void> deletePost(@PathVariable Long postId) {
+    public CommonResponse<Void> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
-        return ApiResponse.success(PostSuccessCode.POST_DELETED);
+        return CommonResponse.success(PostSuccessCode.POST_DELETED);
     }
 }
