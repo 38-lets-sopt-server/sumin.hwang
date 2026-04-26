@@ -6,7 +6,7 @@ import org.sopt.post.validator.PostValidator;
 public record CreatePostCommand(
         String title,
         String content,
-        String author,
+        Long authorId,
         BoardType boardType,
         boolean isAnonymous,
         boolean isQuestion
@@ -15,13 +15,13 @@ public record CreatePostCommand(
     public static CreatePostCommand of(
             String title,
             String content,
-            String author,
+            Long authorId,
             BoardType boardType,
             boolean isAnonymous,
             boolean isQuestion
     ) {
         PostValidator.validateTitle(title);
 
-        return new CreatePostCommand(title, content, author, boardType, isAnonymous, isQuestion);
+        return new CreatePostCommand(title, content, authorId, boardType, isAnonymous, isQuestion);
     }
 }

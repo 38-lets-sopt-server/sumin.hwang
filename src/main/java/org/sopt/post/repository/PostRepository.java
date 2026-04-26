@@ -1,23 +1,14 @@
 package org.sopt.post.repository;
 
-import java.util.List;
-import java.util.Optional;
-import org.sopt.post.domain.Post;
+import org.sopt.post.entity.Post;
 import org.sopt.post.enums.BoardType;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface PostRepository {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    Post save(Post post);
+    Page<Post> findAll(Pageable pageable);
 
-    List<Post> findAll(int page, int size);
-
-    Optional<Post> findById(Long id);
-
-    void deleteById(Long id);
-
-    Long generateId();
-
-    List<Post> findAllByBoardType(BoardType boardType, int page, int size);
+    Page<Post> findAllByBoardType(BoardType boardType, Pageable pageable);
 }
