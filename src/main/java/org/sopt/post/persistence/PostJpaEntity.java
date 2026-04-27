@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.sopt.common.entity.BaseTimeEntity;
 import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
@@ -18,6 +20,8 @@ import org.sopt.user.persistence.UserJpaEntity;
 
 @Entity
 @Table(name = "posts")
+@SQLRestriction("deleted_at IS NULL")
+@SQLDelete(sql = "UPDATE posts SET deleted_at = NOW() WHERE id = ?")
 public class PostJpaEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
