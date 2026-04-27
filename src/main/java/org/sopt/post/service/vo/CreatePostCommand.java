@@ -1,7 +1,6 @@
 package org.sopt.post.service.vo;
 
 import org.sopt.post.enums.BoardType;
-import org.sopt.post.validator.PostValidator;
 
 public record CreatePostCommand(
         String title,
@@ -20,7 +19,6 @@ public record CreatePostCommand(
             boolean isAnonymous,
             boolean isQuestion
     ) {
-        PostValidator.validateTitle(title);
 
         return new CreatePostCommand(title, content, authorId, boardType, isAnonymous, isQuestion);
     }
