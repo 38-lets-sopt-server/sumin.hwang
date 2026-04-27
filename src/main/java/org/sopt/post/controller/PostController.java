@@ -1,16 +1,17 @@
 package org.sopt.post.controller;
 
-import java.util.List;
+import jakarta.validation.Valid;
+import org.sopt.common.dto.PageOffset;
+import org.sopt.common.dto.PageResult;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
 import org.sopt.post.controller.dto.response.PostListResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
-import org.sopt.post.entity.Post;
+import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
 import org.sopt.post.code.PostSuccessCode;
 import org.sopt.post.service.PostService;
-import org.sopt.post.service.vo.PaginationCommand;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +33,7 @@ public class PostController implements PostApi {
     }
 
     @PostMapping
-    public CommonResponse<Void> createPost(@RequestBody CreatePostRequest request) {
+    public CommonResponse<Void> createPost(@Valid @RequestBody CreatePostRequest request) {
         postService.createPost(request.toCommand());
         return CommonResponse.success(PostSuccessCode.POST_CREATED);
     }
@@ -43,8 +44,8 @@ public class PostController implements PostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        List<Post> posts = postService.getAllPosts(
-                PaginationCommand.of(page, size),
+        PageResult<Post> posts = postService.getAllPosts(
+                PageOffset.of(page, size),
                 BoardType.valueOf(boardType.toUpperCase())
         );
 
@@ -53,13 +54,13 @@ public class PostController implements PostApi {
 
     @GetMapping("/{postId}")
     public CommonResponse<PostResponse> getPost(@PathVariable Long postId) {
-        Post post = postService.findOrThrow(postId);
+        Post post = postService.getPostById(postId);
 
         return CommonResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post));
     }
 
     @PutMapping("/{postId}")
-    public CommonResponse<Void> updatePost(@PathVariable Long postId, @RequestBody UpdatePostRequest request) {
+    public CommonResponse<Void> updatePost(@PathVariable Long postId, @Valid @RequestBody UpdatePostRequest request) {
         postService.updatePost(postId, request.toCommand());
         return CommonResponse.success(PostSuccessCode.POST_UPDATED);
     }
