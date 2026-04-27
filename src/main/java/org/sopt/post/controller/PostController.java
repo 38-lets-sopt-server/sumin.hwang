@@ -3,6 +3,7 @@ package org.sopt.post.controller;
 import jakarta.validation.Valid;
 import org.sopt.common.dto.PageOffset;
 import org.sopt.common.dto.PageResult;
+import org.sopt.like.service.LikeService;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
@@ -27,9 +28,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController implements PostApi {
 
     private final PostService postService;
+    private final LikeService likeService;
 
-    public PostController(PostService postService) {
+    public PostController(PostService postService, LikeService likeService) {
         this.postService = postService;
+        this.likeService = likeService;
     }
 
     @PostMapping
@@ -69,5 +72,17 @@ public class PostController implements PostApi {
     public CommonResponse<Void> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return CommonResponse.success(PostSuccessCode.POST_DELETED);
+    }
+
+    @PostMapping("/{postId}/like/{userId}")
+    public CommonResponse<Void> like(@PathVariable Long postId, @PathVariable Long userId) {
+        likeService.like(postId, userId);
+        return CommonResponse.success(PostSuccessCode.POST_LIKE);
+    }
+
+    @PostMapping("/{postId}/unlike/{userId}")
+    public CommonResponse<Void> unlike(@PathVariable Long postId, @PathVariable Long userId) {
+        likeService.unlike(postId, userId);
+        return CommonResponse.success(PostSuccessCode.POST_UNLIKE);
     }
 }
