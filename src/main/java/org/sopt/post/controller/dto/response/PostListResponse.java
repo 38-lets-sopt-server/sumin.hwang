@@ -2,6 +2,7 @@ package org.sopt.post.controller.dto.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import org.sopt.common.dto.PageResult;
 import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
@@ -10,9 +11,14 @@ public record PostListResponse(
         List<PostItem> posts,
         long totalPages
 ) {
-    public static PostListResponse of(PageResult<Post> posts) {
+    public static PostListResponse of(PageResult<Post> posts, Map<Long, Long> likeMap) {
         return new PostListResponse(
-                posts.contents().stream().map(PostItem::from).toList(),
+                posts.contents()
+                        .stream()
+                        .map(post ->
+                                PostItem.from(post, likeMap.getOrDefault(post.id(), 0L))
+                        )
+                        .toList(),
                 posts.totalPages()
         );
     }
@@ -25,9 +31,10 @@ public record PostListResponse(
             BoardType boardType,
             boolean isAnonymous,
             boolean isQuestion,
+            long likeCount,
             LocalDateTime createdAt
     ) {
-        public static PostItem from(Post post) {
+        public static PostItem from(Post post, long likeCount) {
             Long authorId = (post.isAnonymous()) ? null : post.authorId();
 
             return new PostItem(
@@ -38,6 +45,7 @@ public record PostListResponse(
                     post.boardType(),
                     post.isAnonymous(),
                     post.isQuestion(),
+                    likeCount,
                     post.createdAt()
             );
         }

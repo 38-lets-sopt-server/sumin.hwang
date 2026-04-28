@@ -1,6 +1,7 @@
 package org.sopt.post.controller;
 
 import jakarta.validation.Valid;
+import java.util.Map;
 import org.sopt.common.dto.PageOffset;
 import org.sopt.common.dto.PageResult;
 import org.sopt.like.service.LikeService;
@@ -47,12 +48,10 @@ public class PostController implements PostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        PageResult<Post> posts = postService.getAllPosts(
-                PageOffset.of(page, size),
-                BoardType.valueOf(boardType.toUpperCase())
-        );
+        PageResult<Post> posts = postService.getAllPosts(PageOffset.of(page, size), BoardType.valueOf(boardType.toUpperCase()));
+        Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
 
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts, likeMap));
     }
 
     @GetMapping("/{postId}")
