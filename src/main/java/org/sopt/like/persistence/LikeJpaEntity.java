@@ -11,8 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
 import org.sopt.post.persistence.PostJpaEntity;
 import org.sopt.user.persistence.UserJpaEntity;
 
@@ -26,8 +24,6 @@ import org.sopt.user.persistence.UserJpaEntity;
                 @Index(name = "idx_like_post_id", columnList = "post_id"),
         }
 )
-@SQLRestriction("deleted_at IS NULL")
-@SQLDelete(sql = "UPDATE likes SET deleted_at = NOW() WHERE id = ?")
 public class LikeJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
