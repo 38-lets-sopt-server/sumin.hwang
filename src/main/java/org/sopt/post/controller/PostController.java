@@ -69,8 +69,9 @@ public class PostController implements PostApi {
     @GetMapping("/{postId}")
     public CommonResponse<PostResponse> getPost(@PathVariable Long postId) {
         Post post = postService.getPostById(postId);
+        long likeCount = likeService.countLike(postId);
 
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post, likeCount));
     }
 
     @PutMapping("/{postId}")

@@ -12,10 +12,11 @@ public record PostResponse(
         BoardType boardType,
         boolean isAnonymous,
         boolean isQuestion,
+        long likeCount,
         LocalDateTime createdAt
 ) {
 
-    public static PostResponse from(Post post) {
+    public static PostResponse from(Post post, long likeCount) {
         Long authorId = (post.isAnonymous()) ? null : post.authorId();
 
         return new PostResponse(
@@ -26,6 +27,7 @@ public record PostResponse(
                 post.boardType(),
                 post.isAnonymous(),
                 post.isQuestion(),
+                likeCount,
                 post.createdAt()
         );
     }

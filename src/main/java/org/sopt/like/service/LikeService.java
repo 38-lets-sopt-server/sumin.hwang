@@ -43,6 +43,12 @@ public class LikeService {
         return likeReader.countLikes(posts);
     }
 
+    public Long countLike(Long postId) {
+        Post post = postReader.read(postId);
+
+        return likeReader.countLike(post);
+    }
+
     //추후 인증/인가 도입 시, 로그인한 사용자의 도입 여부를 포함하기 위해 미리 구현해두었습니다.
     public boolean isLiked(Long postId, Long userId) {
         Post post = postReader.read(postId);

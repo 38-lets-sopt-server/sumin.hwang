@@ -28,4 +28,8 @@ public class LikeReader {
                         .collect(Collectors.toUnmodifiableSet())
         );
     }
+
+    public Long countLike(Post post) {
+        return likeJpaRepository.countByPostId(post.id());
+    }
 }
