@@ -11,6 +11,6 @@ public interface LikeJpaRepository extends JpaRepository<LikeJpaEntity, Long> {
 
     void deleteByPostIdAndUserId(Long postId, Long postId1);
 
-    @Query("SELECT p.id, count(l) FROM Like l JOIN FETCH l.post p GROUP BY p.id")
+    @Query("SELECT p.id, COUNT(l) FROM Like l JOIN FETCH l.post p GROUP BY p.id ORDER BY p.createdAt DESC")
     Map<Long, Long> countByPostIds(Set<Long> postIds);
 }
