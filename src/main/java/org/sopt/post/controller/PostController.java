@@ -2,7 +2,6 @@ package org.sopt.post.controller;
 
 import jakarta.validation.Valid;
 import org.sopt.common.dto.PageOffset;
-import org.sopt.like.service.LikeService;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
@@ -12,7 +11,6 @@ import org.sopt.post.controller.dto.response.PostResponse;
 import org.sopt.post.enums.BoardType;
 import org.sopt.post.code.PostSuccessCode;
 import org.sopt.post.facade.PostFacade;
-import org.sopt.post.service.PostService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,19 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/posts")
 public class PostController implements PostApi {
 
-    private final PostService postService;
-    private final LikeService likeService;
     private final PostFacade postFacade;
 
-    public PostController(PostService postService, LikeService likeService, PostFacade postFacade) {
-        this.postService = postService;
-        this.likeService = likeService;
+    public PostController(PostFacade postFacade) {
         this.postFacade = postFacade;
     }
 
     @PostMapping
     public CommonResponse<Void> createPost(@Valid @RequestBody CreatePostRequest request) {
-        postService.createPost(request.toCommand());
+        postFacade.createPost(request.toCommand());
         return CommonResponse.success(PostSuccessCode.POST_CREATED);
     }
 
@@ -71,19 +65,19 @@ public class PostController implements PostApi {
 
     @PutMapping("/{postId}")
     public CommonResponse<Void> updatePost(@PathVariable Long postId, @Valid @RequestBody UpdatePostRequest request) {
-        postService.updatePost(postId, request.toCommand());
+        postFacade.updatePost(postId, request.toCommand());
         return CommonResponse.success(PostSuccessCode.POST_UPDATED);
     }
 
     @DeleteMapping("/{postId}")
     public CommonResponse<Void> deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+        postFacade.deletePost(postId);
         return CommonResponse.success(PostSuccessCode.POST_DELETED);
     }
 
     @PostMapping("/{postId}/like/{userId}")
     public CommonResponse<LikeToggleResponse> toggleLike(@PathVariable Long postId, @PathVariable Long userId) {
-        boolean liked = likeService.toggleLike(postId, userId);
+        boolean liked = postFacade.toggleLike(postId, userId);
         PostSuccessCode code = liked ? PostSuccessCode.POST_LIKE : PostSuccessCode.POST_UNLIKE;
         return CommonResponse.success(code, new LikeToggleResponse(liked));
     }

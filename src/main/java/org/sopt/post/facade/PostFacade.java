@@ -9,6 +9,8 @@ import org.sopt.post.controller.dto.response.PostResponse;
 import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
 import org.sopt.post.service.PostService;
+import org.sopt.post.service.vo.CreatePostCommand;
+import org.sopt.post.service.vo.UpdatePostCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,11 @@ public class PostFacade {
     public PostFacade(PostService postService, LikeService likeService) {
         this.postService = postService;
         this.likeService = likeService;
+    }
+
+    @Transactional
+    public void createPost(CreatePostCommand command) {
+        postService.createPost(command);
     }
 
     public PostListResponse getAllPosts(PageOffset pageOffset, BoardType boardType) {
@@ -43,5 +50,20 @@ public class PostFacade {
         long likeCount = likeService.countLike(postId);
 
         return PostResponse.from(post, likeCount);
+    }
+
+    @Transactional
+    public void updatePost(Long postId, UpdatePostCommand command) {
+        postService.updatePost(postId, command);
+    }
+
+    @Transactional
+    public void deletePost(Long postId) {
+        postService.deletePost(postId);
+    }
+
+    @Transactional
+    public boolean toggleLike(Long postId, Long userId) {
+        return likeService.toggleLike(postId, userId);
     }
 }
