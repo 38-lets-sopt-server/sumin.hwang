@@ -1,6 +1,8 @@
 package org.sopt.common.dto;
 
-import org.springframework.util.Assert;
+import org.sopt.common.code.GlobalErrorCode;
+import org.sopt.common.exception.BusinessException;
+import org.springframework.data.domain.PageRequest;
 
 public record PageOffset(
         int page,
@@ -8,9 +10,22 @@ public record PageOffset(
 ) {
 
     public static PageOffset of(int page, int size) {
-        Assert.isTrue(page >= 0, "page는 0 이상이어야 합니다.");
-        Assert.isTrue(size > 0, "size는 양수여야 합니다.");
+        validate(page, size);
 
         return new PageOffset(page, size);
+    }
+
+    public PageRequest toPageRequest() {
+        return PageRequest.of(page, size);
+    }
+
+    private static void validate(int page, int size) {
+        if (page < 0) {
+            throw new BusinessException(GlobalErrorCode.INVALID_PAGE);
+        }
+
+        if (size <= 0) {
+            throw new BusinessException(GlobalErrorCode.INVALID_PAGE_SIZE);
+        }
     }
 }

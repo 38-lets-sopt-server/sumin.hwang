@@ -18,7 +18,7 @@ public class PostFinder {
     }
 
     public Page<Post> find(BoardType boardType, PageOffset pageOffset) {
-        PageRequest pageable = PageRequest.of(pageOffset.page(), pageOffset.size());
+        PageRequest pageable = pageOffset.toPageRequest();
 
         Page<PostJpaEntity> results =
                 (boardType != null) ? postJpaRepository.findAllByBoardType(boardType, pageable) :
