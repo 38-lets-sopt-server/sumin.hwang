@@ -1,18 +1,16 @@
 package org.sopt.post.controller;
 
 import jakarta.validation.Valid;
-import java.util.Map;
 import org.sopt.common.dto.PageOffset;
-import org.sopt.common.dto.PageResult;
 import org.sopt.like.service.LikeService;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
 import org.sopt.post.controller.dto.response.PostListResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
-import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
 import org.sopt.post.code.PostSuccessCode;
+import org.sopt.post.facade.PostFacade;
 import org.sopt.post.service.PostService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,10 +28,12 @@ public class PostController implements PostApi {
 
     private final PostService postService;
     private final LikeService likeService;
+    private final PostFacade postFacade;
 
-    public PostController(PostService postService, LikeService likeService) {
+    public PostController(PostService postService, LikeService likeService, PostFacade postFacade) {
         this.postService = postService;
         this.likeService = likeService;
+        this.postFacade = postFacade;
     }
 
     @PostMapping
@@ -48,10 +48,8 @@ public class PostController implements PostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        PageResult<Post> posts = postService.getAllPosts(PageOffset.of(page, size), BoardType.valueOf(boardType.toUpperCase()));
-        Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
-
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts, likeMap));
+        PostListResponse response = postFacade.getAllPosts(PageOffset.of(page, size), BoardType.valueOf(boardType.toUpperCase()));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
     }
 
     @GetMapping("/search")
@@ -60,18 +58,14 @@ public class PostController implements PostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        PageResult<Post> posts = postService.searchPosts(keyword, PageOffset.of(page, size));
-        Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
-
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts, likeMap));
+        PostListResponse response = postFacade.searchPosts(keyword, PageOffset.of(page, size));
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
     }
 
     @GetMapping("/{postId}")
     public CommonResponse<PostResponse> getPost(@PathVariable Long postId) {
-        Post post = postService.getPostById(postId);
-        long likeCount = likeService.countLike(postId);
-
-        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostResponse.from(post, likeCount));
+        PostResponse response = postFacade.getPost(postId);
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
     }
 
     @PutMapping("/{postId}")
