@@ -25,18 +25,11 @@ public class LikeService {
         this.likeProcessor = likeProcessor;
     }
 
-    public void like(Long postId, Long userId) {
+    public boolean toggleLike(Long postId, Long userId) {
         Post post = postReader.read(postId);
         User user = userReader.read(userId);
 
-        likeProcessor.like(post, user);
-    }
-
-    public void unlike(Long postId, Long userId) {
-        Post post = postReader.read(postId);
-        User user = userReader.read(userId);
-
-        likeProcessor.unlike(post, user);
+        return likeProcessor.toggleLike(post, user);
     }
 
     public Map<Long, Long> countLikes(List<Post> posts) {

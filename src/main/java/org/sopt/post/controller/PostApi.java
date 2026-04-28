@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.sopt.common.dto.CommonResponse;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
+import org.sopt.post.controller.dto.response.LikeToggleResponse;
 import org.sopt.post.controller.dto.response.PostListResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,9 +41,6 @@ public interface PostApi {
     @Operation(summary = "게시글 삭제", description = "게시글 ID로 게시글을 조회합니다.")
     CommonResponse<Void> deletePost(@PathVariable Long postId);
 
-    @Operation(summary = "게시글 좋아요", description = "게시글 ID로 좋아요 처리합니다. (userId는 인증 적용 전 임시로 붙여두었습니다.)")
-    CommonResponse<Void> like(@PathVariable Long postId, @PathVariable Long userId);
-
-    @Operation(summary = "게시물 좋아요 취소", description = "게시글 ID로 좋아요를 취소합니다. (userId는 인증 적용 전 임시로 붙여두었습니다.)")
-    CommonResponse<Void> unlike(@PathVariable Long postId, @PathVariable Long userId);
+    @Operation(summary = "게시글 좋아요 토글", description = "게시글 ID로 좋아요를 토글합니다. 응답의 liked 값으로 현재 상태를 알 수 있습니다. (userId는 인증 적용 전 임시로 붙여두었습니다.)")
+    CommonResponse<LikeToggleResponse> toggleLike(@PathVariable Long postId, @PathVariable Long userId);
 }

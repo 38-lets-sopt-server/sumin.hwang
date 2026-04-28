@@ -6,6 +6,7 @@ import org.sopt.like.service.LikeService;
 import org.sopt.post.controller.dto.request.UpdatePostRequest;
 import org.sopt.post.controller.dto.request.CreatePostRequest;
 import org.sopt.common.dto.CommonResponse;
+import org.sopt.post.controller.dto.response.LikeToggleResponse;
 import org.sopt.post.controller.dto.response.PostListResponse;
 import org.sopt.post.controller.dto.response.PostResponse;
 import org.sopt.post.enums.BoardType;
@@ -81,14 +82,9 @@ public class PostController implements PostApi {
     }
 
     @PostMapping("/{postId}/like/{userId}")
-    public CommonResponse<Void> like(@PathVariable Long postId, @PathVariable Long userId) {
-        likeService.like(postId, userId);
-        return CommonResponse.success(PostSuccessCode.POST_LIKE);
-    }
-
-    @PostMapping("/{postId}/unlike/{userId}")
-    public CommonResponse<Void> unlike(@PathVariable Long postId, @PathVariable Long userId) {
-        likeService.unlike(postId, userId);
-        return CommonResponse.success(PostSuccessCode.POST_UNLIKE);
+    public CommonResponse<LikeToggleResponse> toggleLike(@PathVariable Long postId, @PathVariable Long userId) {
+        boolean liked = likeService.toggleLike(postId, userId);
+        PostSuccessCode code = liked ? PostSuccessCode.POST_LIKE : PostSuccessCode.POST_UNLIKE;
+        return CommonResponse.success(code, new LikeToggleResponse(liked));
     }
 }
