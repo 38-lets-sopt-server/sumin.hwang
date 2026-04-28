@@ -1,16 +1,12 @@
 package org.sopt.like.persistence;
 
-import java.util.Map;
-import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 
-public interface LikeJpaRepository extends JpaRepository<LikeJpaEntity, Long> {
+public interface LikeJpaRepository extends JpaRepository<LikeJpaEntity, Long>, LikeJpaRepositoryCustom {
 
     boolean existsByPostIdAndUserId(Long postId, Long userId);
 
-    void deleteByPostIdAndUserId(Long postId, Long postId1);
+    void deleteByPostIdAndUserId(Long postId, Long userId);
 
-    @Query("SELECT p.id, COUNT(l) FROM Like l JOIN FETCH l.post p GROUP BY p.id ORDER BY p.createdAt DESC")
-    Map<Long, Long> countByPostIds(Set<Long> postIds);
+    Long countByPostId(Long postId);
 }
