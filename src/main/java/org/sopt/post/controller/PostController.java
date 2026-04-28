@@ -54,6 +54,18 @@ public class PostController implements PostApi {
         return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts, likeMap));
     }
 
+    @GetMapping("/search")
+    public CommonResponse<PostListResponse> searchPosts(
+            @RequestParam String keyword,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    ) {
+        PageResult<Post> posts = postService.searchPosts(keyword, PageOffset.of(page, size));
+        Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
+
+        return CommonResponse.success(PostSuccessCode.POST_FOUND, PostListResponse.of(posts, likeMap));
+    }
+
     @GetMapping("/{postId}")
     public CommonResponse<PostResponse> getPost(@PathVariable Long postId) {
         Post post = postService.getPostById(postId);

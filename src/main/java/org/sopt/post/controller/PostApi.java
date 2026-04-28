@@ -24,6 +24,13 @@ public interface PostApi {
             @RequestParam(required = false, defaultValue = "10") int size
     );
 
+    @Operation(summary = "게시글 검색", description = "제목으로 게시글을 검색합니다.")
+    CommonResponse<PostListResponse> searchPosts(
+            @RequestParam String keyword,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size
+    );
+
     @Operation(summary = "게시글 상세 조회", description = "게시글 ID로 게시글 상세 정보를 조회합니다.")
     CommonResponse<PostResponse> getPost(@PathVariable Long postId);
 

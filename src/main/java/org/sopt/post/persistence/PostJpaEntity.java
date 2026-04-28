@@ -18,7 +18,7 @@ import org.sopt.post.domain.Post;
 import org.sopt.post.enums.BoardType;
 import org.sopt.user.persistence.UserJpaEntity;
 
-@Entity
+@Entity(name = "Post")
 @Table(name = "posts")
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE posts SET deleted_at = NOW() WHERE id = ?")

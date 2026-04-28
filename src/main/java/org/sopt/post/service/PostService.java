@@ -61,6 +61,10 @@ public class PostService {
         return PageResult.from(postFinder.find(boardType, pageOffset));
     }
 
+    public PageResult<Post> searchPosts(String keyword, PageOffset pageOffset) {
+        return PageResult.from(postFinder.search(keyword, pageOffset));
+    }
+
     public Post getPostById(Long id) {
         return postReader.read(id);
     }

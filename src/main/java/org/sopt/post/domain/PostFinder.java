@@ -26,4 +26,11 @@ public class PostFinder {
 
         return results.map(PostJpaEntity::toDomain);
     }
+
+    public Page<Post> search(String keyword, PageOffset pageOffset) {
+        PageRequest pageable = pageOffset.toPageRequest();
+
+        return postJpaRepository.searchByTitleWithUser(keyword, pageable)
+                .map(PostJpaEntity::toDomain);
+    }
 }
