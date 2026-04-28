@@ -7,13 +7,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
+import org.sopt.common.entity.BaseTimeEntity;
 import org.sopt.user.domain.User;
 
 @Entity
 @Table(name = "users")
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
-public class UserJpaEntity {
+public class UserJpaEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
