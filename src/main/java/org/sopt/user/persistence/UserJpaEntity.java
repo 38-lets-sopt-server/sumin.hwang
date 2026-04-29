@@ -49,7 +49,7 @@ public class UserJpaEntity extends BaseTimeEntity {
     }
 
     public User toDomain() {
-        return new User(id, nickname, email);
+        return User.createWithId(id, nickname, email);
     }
 
     public static UserJpaEntity create(String nickname, String email) {
@@ -57,6 +57,6 @@ public class UserJpaEntity extends BaseTimeEntity {
     }
 
     public static UserJpaEntity from(User user) {
-        return new UserJpaEntity(user.id(), user.nickname(), user.email());
+        return new UserJpaEntity(user.getId(), user.getNickname(), user.getEmail());
     }
 }

@@ -16,7 +16,7 @@ public record PostListResponse(
                 posts.contents()
                         .stream()
                         .map(post ->
-                                PostItem.from(post, likeMap.getOrDefault(post.id(), 0L))
+                                PostItem.from(post, likeMap.getOrDefault(post.getId(), 0L))
                         )
                         .toList(),
                 posts.totalPages()
@@ -35,18 +35,18 @@ public record PostListResponse(
             LocalDateTime createdAt
     ) {
         public static PostItem from(Post post, long likeCount) {
-            Long authorId = (post.isAnonymous()) ? null : post.authorId();
+            Long authorId = (post.isAnonymous()) ? null : post.getAuthorId();
 
             return new PostItem(
-                    post.id(),
-                    post.title(),
-                    post.content(),
+                    post.getId(),
+                    post.getTitle(),
+                    post.getContent(),
                     authorId,
-                    post.boardType(),
+                    post.getBoardType(),
                     post.isAnonymous(),
                     post.isQuestion(),
                     likeCount,
-                    post.createdAt()
+                    post.getCreatedAt()
             );
         }
     }

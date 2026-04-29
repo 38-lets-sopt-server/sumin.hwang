@@ -1,7 +1,5 @@
 package org.sopt.post.domain;
 
-import org.sopt.post.persistence.PostJpaEntity;
-import org.sopt.post.persistence.PostJpaRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,18 +7,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostDeleter {
 
     private final PostReader postReader;
-    private final PostJpaRepository postJpaRepository;
+    private final PostRepository postRepository;
 
-    public PostDeleter(PostReader postReader, PostJpaRepository postJpaRepository) {
+    public PostDeleter(PostReader postReader, PostRepository postRepository) {
         this.postReader = postReader;
-        this.postJpaRepository = postJpaRepository;
+        this.postRepository = postRepository;
     }
 
     @Transactional
     public void delete(Long id) {
         Post post = postReader.read(id);
-        PostJpaEntity postEntity = PostJpaEntity.from(post);
 
-        postJpaRepository.delete(postEntity);
+        postRepository.delete(post);
     }
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.sopt.common.entity.BaseTimeEntity;
@@ -101,14 +102,8 @@ public class PostJpaEntity extends BaseTimeEntity {
         return new PostJpaEntity(title, content, authorId, boardType, isAnonymous, isQuestion);
     }
 
-    public void update(String title, String content, boolean isAnonymous) {
-        this.title = title;
-        this.content = content;
-        this.isAnonymous = isAnonymous;
-    }
-
     public Post toDomain() {
-        return new Post(
+        return Post.createWithId(
                 id,
                 title,
                 content,
@@ -120,13 +115,13 @@ public class PostJpaEntity extends BaseTimeEntity {
         );
     }
 
-    public static PostJpaEntity from(Post post) {
+    public static PostJpaEntity fromDomain(Post post) {
         return new PostJpaEntity(
-                post.id(),
-                post.title(),
-                post.content(),
-                post.authorId(),
-                post.boardType(),
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthorId(),
+                post.getBoardType(),
                 post.isAnonymous(),
                 post.isQuestion()
         );

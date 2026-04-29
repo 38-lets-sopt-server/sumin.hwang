@@ -1,6 +1,5 @@
 package org.sopt.post.domain;
 
-import org.sopt.post.persistence.PostJpaEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,16 +7,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class PostUpdater {
 
     private final PostReader postReader;
+    private final PostRepository postRepository;
 
-    public PostUpdater(PostReader postReader) {
+    public PostUpdater(PostReader postReader, PostRepository postRepository) {
         this.postReader = postReader;
+        this.postRepository = postRepository;
     }
 
     @Transactional
     public void update(Long postId, String newTitle, String newContent, boolean isAnonymous) {
         Post post = postReader.read(postId);
-        PostJpaEntity postEntity = PostJpaEntity.from(post);
 
-        postEntity.update(newTitle, newContent, isAnonymous);
+        post.update(newTitle, newContent, isAnonymous);
+        postRepository.save(post);
     }
 }

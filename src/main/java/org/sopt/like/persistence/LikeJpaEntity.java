@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.sopt.like.domain.Like;
 import org.sopt.post.persistence.PostJpaEntity;
 import org.sopt.user.persistence.UserJpaEntity;
 
@@ -53,6 +54,14 @@ public class LikeJpaEntity {
 
     public static LikeJpaEntity create(Long postId, Long userId) {
         return new LikeJpaEntity(postId, userId);
+    }
+
+    public static LikeJpaEntity from(Like like) {
+        return new LikeJpaEntity(like.getPostId(), like.getUserId());
+    }
+
+    public Like toDomain() {
+        return Like.createWithId(id, postId, userId);
     }
 
     public Long getId() {

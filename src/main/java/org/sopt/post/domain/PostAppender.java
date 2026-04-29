@@ -1,8 +1,6 @@
 package org.sopt.post.domain;
 
-import org.sopt.post.persistence.PostJpaEntity;
 import org.sopt.post.enums.BoardType;
-import org.sopt.post.persistence.PostJpaRepository;
 import org.sopt.user.domain.User;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class PostAppender {
 
-    private final PostJpaRepository postJpaRepository;
+    private final PostRepository postRepository;
 
-    public PostAppender(PostJpaRepository postJpaRepository) {
-        this.postJpaRepository = postJpaRepository;
+    public PostAppender(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
     @Transactional
@@ -25,17 +23,15 @@ public class PostAppender {
             boolean isAnonymous,
             boolean isQuestion
     ) {
-        PostJpaEntity newEntity = postJpaRepository.save(
-                PostJpaEntity.create(
-                        title,
-                        content,
-                        author.id(),
-                        boardType,
-                        isAnonymous,
-                        isQuestion
-                )
+        Post post = Post.create(
+                title,
+                content,
+                author.getId(),
+                boardType,
+                isAnonymous,
+                isQuestion
         );
 
-        return newEntity.toDomain();
+        return postRepository.save(post);
     }
 }

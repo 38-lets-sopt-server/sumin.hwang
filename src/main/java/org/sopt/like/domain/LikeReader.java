@@ -2,8 +2,8 @@ package org.sopt.like.domain;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
-import org.sopt.like.persistence.LikeJpaRepository;
 import org.sopt.post.domain.Post;
 import org.sopt.user.domain.User;
 import org.springframework.stereotype.Component;
@@ -11,25 +11,25 @@ import org.springframework.stereotype.Component;
 @Component
 public class LikeReader {
 
-    private final LikeJpaRepository likeJpaRepository;
+    private final LikeRepository likeRepository;
 
-    public LikeReader(LikeJpaRepository likeJpaRepository) {
-        this.likeJpaRepository = likeJpaRepository;
+    public LikeReader(LikeRepository likeRepository) {
+        this.likeRepository = likeRepository;
     }
 
     public boolean isLiked(Post post, User user) {
-        return likeJpaRepository.existsByPostIdAndUserId(post.id(), user.id());
+        return likeRepository.existsByPostIdAndUserId(post.getId(), user.getId());
     }
 
     public Map<Long, Long> countLikes(List<Post> posts) {
-        return likeJpaRepository.countByPostIds(
-                posts.stream()
-                        .map(Post::id)
-                        .collect(Collectors.toUnmodifiableSet())
-        );
+        Set<Long> postIds = posts.stream()
+                .map(Post::getId)
+                .collect(Collectors.toUnmodifiableSet());
+
+        return likeRepository.countByPostIds(postIds);
     }
 
     public Long countLike(Post post) {
-        return likeJpaRepository.countByPostId(post.id());
+        return likeRepository.countByPostId(post.getId());
     }
 }

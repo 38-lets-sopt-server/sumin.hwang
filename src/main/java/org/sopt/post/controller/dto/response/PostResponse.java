@@ -17,18 +17,18 @@ public record PostResponse(
 ) {
 
     public static PostResponse from(Post post, long likeCount) {
-        Long authorId = (post.isAnonymous()) ? null : post.authorId();
+        Long authorId = (post.isAnonymous()) ? null : post.getAuthorId();
 
         return new PostResponse(
-                post.id(),
-                post.title(),
-                post.content(),
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
                 authorId,
-                post.boardType(),
+                post.getBoardType(),
                 post.isAnonymous(),
                 post.isQuestion(),
                 likeCount,
-                post.createdAt()
+                post.getCreatedAt()
         );
     }
 }
