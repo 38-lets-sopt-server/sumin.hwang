@@ -39,19 +39,22 @@ public class PostController implements PostApi {
 
     @GetMapping
     public CommonResponse<PostListResponse> getAllPosts(
-            @RequestParam(required = false, defaultValue = "FREE") String boardType,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size
+        @RequestParam(required = false, defaultValue = "FREE") String boardType,
+        @RequestParam(required = false, defaultValue = "0") int page,
+        @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        PostListResponse response = postFacade.getAllPosts(PageOffset.of(page, size), BoardType.from(boardType.toUpperCase()));
+        PostListResponse response = postFacade.getAllPosts(
+            PageOffset.of(page, size),
+            BoardType.from(boardType.toUpperCase())
+        );
         return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
     }
 
     @GetMapping("/search")
     public CommonResponse<PostListResponse> searchPosts(
-            @RequestParam String keyword,
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size
+        @RequestParam String keyword,
+        @RequestParam(required = false, defaultValue = "0") int page,
+        @RequestParam(required = false, defaultValue = "10") int size
     ) {
         PostListResponse response = postFacade.searchPosts(keyword, PageOffset.of(page, size));
         return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
