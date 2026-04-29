@@ -1,5 +1,7 @@
 package org.sopt.user.domain;
 
+import java.util.Map;
+import java.util.Set;
 import org.sopt.common.exception.BusinessException;
 import org.sopt.user.code.UserErrorCode;
 import org.springframework.stereotype.Component;
@@ -16,5 +18,9 @@ public class UserReader {
     public User read(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(UserErrorCode.USER_NOT_FOUND));
+    }
+
+    public Map<Long, User> readMap(Set<Long> ids) {
+        return userRepository.findAllByIdsAsMap(ids);
     }
 }

@@ -19,11 +19,9 @@ public class PostJpaRepositoryCustomImpl implements PostJpaRepositoryCustom {
     }
 
     @Override
-    public Page<PostJpaEntity> searchByTitleWithUser(String keyword, Pageable pageable) {
+    public Page<PostJpaEntity> searchByTitle(String keyword, Pageable pageable) {
         List<PostJpaEntity> queryResults = queryFactory
                 .selectFrom(qPost)
-                .innerJoin(qPost.author, qUser)
-                .fetchJoin()
                 .where(titleContains(keyword))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

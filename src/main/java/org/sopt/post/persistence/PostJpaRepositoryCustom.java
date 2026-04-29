@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface PostJpaRepositoryCustom {
 
-    Page<PostJpaEntity> searchByTitleWithUser(String keyword, Pageable pageable);
+    Page<PostJpaEntity> searchByTitle(String keyword, Pageable pageable);
 }

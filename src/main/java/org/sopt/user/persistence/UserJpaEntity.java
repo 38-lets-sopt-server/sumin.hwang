@@ -10,7 +10,7 @@ import org.hibernate.annotations.SQLRestriction;
 import org.sopt.common.entity.BaseTimeEntity;
 import org.sopt.user.domain.User;
 
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")

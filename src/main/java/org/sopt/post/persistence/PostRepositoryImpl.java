@@ -37,7 +37,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Page<Post> searchByTitle(String keyword, PageOffset pageOffset) {
-        return postJpaRepository.searchByTitleWithUser(keyword, pageOffset.toPageRequest())
+        return postJpaRepository.searchByTitle(keyword, pageOffset.toPageRequest())
                 .map(PostJpaEntity::toDomain);
     }
 

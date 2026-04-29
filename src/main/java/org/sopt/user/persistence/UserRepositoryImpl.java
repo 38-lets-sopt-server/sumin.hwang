@@ -1,6 +1,9 @@
 package org.sopt.user.persistence;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.sopt.user.domain.User;
 import org.sopt.user.domain.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -18,5 +21,17 @@ public class UserRepositoryImpl implements UserRepository {
     public Optional<User> findById(Long id) {
         return userJpaRepository.findById(id)
                 .map(UserJpaEntity::toDomain);
+    }
+
+    @Override
+    public Map<Long, User> findAllByIdsAsMap(Set<Long> ids) {
+        return userJpaRepository.findAllById(ids)
+                .stream()
+                .collect(
+                        Collectors.toUnmodifiableMap(
+                                UserJpaEntity::getId,
+                                UserJpaEntity::toDomain
+                        )
+                );
     }
 }
