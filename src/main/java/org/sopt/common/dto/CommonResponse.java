@@ -23,6 +23,11 @@ public record CommonResponse<T>(
         return new CommonResponse<>(errorCode.getStatus().value(), errorCode.name(), errorCode.getMessage(), null);
     }
 
+    public static CommonResponse<Void> validationError(String validationErrorMessage) {
+        GlobalErrorCode errorCode = GlobalErrorCode.INVALID_INPUT;
+        return new CommonResponse<>(errorCode.getStatus().value(), errorCode.name(), validationErrorMessage, null);
+    }
+
     public static CommonResponse<Void> error(Exception e) {
         GlobalErrorCode errorMessage = GlobalErrorCode.INTERNAL_SERVER_ERROR;
         String consoleMessage = e.getClass().getSimpleName() + ": " + e.getMessage();
