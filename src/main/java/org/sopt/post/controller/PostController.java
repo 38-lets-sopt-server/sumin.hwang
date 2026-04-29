@@ -43,7 +43,7 @@ public class PostController implements PostApi {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
     ) {
-        PostListResponse response = postFacade.getAllPosts(PageOffset.of(page, size), BoardType.valueOf(boardType.toUpperCase()));
+        PostListResponse response = postFacade.getAllPosts(PageOffset.of(page, size), BoardType.from(boardType.toUpperCase()));
         return CommonResponse.success(PostSuccessCode.POST_FOUND, response);
     }
 
