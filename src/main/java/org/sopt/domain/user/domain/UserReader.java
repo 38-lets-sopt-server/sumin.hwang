@@ -20,6 +20,11 @@ public class UserReader {
                 .orElseThrow(() -> new BusinessException(UserErrorCode.USER_NOT_FOUND));
     }
 
+    public User read(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException(UserErrorCode.USER_NOT_FOUND));
+    }
+
     public Map<Long, User> readMap(Set<Long> ids) {
         return userRepository.findAllByIdsAsMap(ids);
     }

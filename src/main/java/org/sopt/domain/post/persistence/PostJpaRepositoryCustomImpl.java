@@ -3,7 +3,7 @@ package org.sopt.domain.post.persistence;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
-import org.sopt.user.persistence.QUserJpaEntity;
+import org.sopt.domain.user.persistence.QUserJpaEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;

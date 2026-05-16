@@ -9,4 +9,6 @@ public interface UserRepository {
     Optional<User> findById(Long id);
 
     Map<Long, User> findAllByIdsAsMap(Set<Long> ids);
+
+    Optional<User> findByEmail(String email);
 }
