@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.sopt.security.UserAuthentication;
+import org.sopt.security.provider.PrincipalProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtProcessor jwtProcessor;
 
+    private static final String BEARER_PREFIX = "Bearer ";
+
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -28,14 +32,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header != null && header.startsWith("Bearer ")) {
-            String token = header.substring("Bearer ".length()).trim();
+
+        if (header != null && header.startsWith(BEARER_PREFIX)) {
+            String token = header.substring(BEARER_PREFIX.length()).trim();
+
             try {
                 Long userId = jwtProcessor.verifyAndGetUserId(token);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        String.valueOf(userId), null, Collections.emptyList());
-                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                PrincipalProvider provider = PrincipalProvider.of(userId);
+
+                SecurityContextHolder.getContext().setAuthentication(UserAuthentication.create(provider));
             } catch (IllegalArgumentException | JWTVerificationException e) {
                 // 유효하지 않은 토큰 또는 토큰이 없는 경우, 인증 없이 다음 필터로 넘겨요.
                 // 여기서 예외를 던지지 않는 이유는, /v1/login 같이 인증이 필요 없는 API도
