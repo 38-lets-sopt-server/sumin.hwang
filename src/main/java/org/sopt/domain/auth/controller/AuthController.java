@@ -1,0 +1,27 @@
+package org.sopt.domain.auth.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.sopt.common.dto.CommonResponse;
+import org.sopt.domain.auth.code.AuthSuccessCode;
+import org.sopt.domain.auth.controller.dto.LoginResponse;
+import org.sopt.domain.auth.facade.AuthFacade;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/v1/auth")
+public class AuthController implements AuthApi {
+
+    private final AuthFacade authFacade;
+
+    @PostMapping("/login")
+    public CommonResponse<LoginResponse> login(
+            @RequestParam("email") String email,
+            @RequestParam("password") String password
+    ) {
+        return CommonResponse.success(AuthSuccessCode.LOGIN_SUCCEED, authFacade.login(email, password));
+    }
+}
