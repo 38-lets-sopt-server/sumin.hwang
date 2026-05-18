@@ -3,7 +3,7 @@ package org.sopt.domain.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.sopt.common.exception.BusinessException;
 import org.sopt.domain.auth.code.AuthErrorCode;
-import org.sopt.domain.auth.domain.RefreshTokenUpdater;
+import org.sopt.domain.auth.domain.RefreshTokenRotator;
 import org.sopt.domain.auth.service.vo.LoginTokens;
 import org.sopt.domain.user.domain.User;
 import org.sopt.domain.user.domain.UserReader;
@@ -18,7 +18,7 @@ public class AuthService {
 
     private final UserReader userReader;
     private final JwtProcessor jwtProcessor;
-    private final RefreshTokenUpdater refreshTokenUpdater;
+    private final RefreshTokenRotator refreshTokenRotator;
 
     @Transactional
     public LoginTokens login(String email, String password) {
@@ -29,7 +29,7 @@ public class AuthService {
         String newRefreshToken = jwtProcessor.generateRefreshToken(loginUserId);
 
         // 기존 Refresh Token 삭제 후 새로 저장
-        refreshTokenUpdater.update(loginUserId, newRefreshToken);
+        refreshTokenRotator.rotate(loginUserId, newRefreshToken);
 
         return LoginTokens.of(accessToken, newRefreshToken);
     }

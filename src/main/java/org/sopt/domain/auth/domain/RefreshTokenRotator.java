@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RefreshTokenUpdater {
+public class RefreshTokenRotator {
 
     private final RefreshTokenReader refreshTokenReader;
+    private final RefreshTokenRepository refreshTokenRepository;
     @Value("${security.jwt.refresh-token-expires-in-seconds:1209600}")
     private long refreshTokenExpiresInSeconds;
-    private final RefreshTokenRepository refreshTokenRepository;
 
-    public void update(Long userId, String newToken) {
+    public void rotate(Long userId, String newToken) {
         RefreshToken refreshToken = refreshTokenReader.readOrNull(userId);
 
         if (refreshToken != null) {
