@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.sopt.common.dto.PageOffset;
 import org.sopt.common.dto.PageResult;
 import org.sopt.domain.like.service.LikeService;
@@ -16,26 +17,22 @@ import org.sopt.domain.post.service.vo.CreatePostCommand;
 import org.sopt.domain.post.service.vo.UpdatePostCommand;
 import org.sopt.domain.user.domain.User;
 import org.sopt.domain.user.service.UserService;
+import org.sopt.security.provider.PrincipalProvider;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class PostFacade {
 
     private final PostService postService;
     private final LikeService likeService;
     private final UserService userService;
 
-    public PostFacade(PostService postService, LikeService likeService, UserService userService) {
-        this.postService = postService;
-        this.likeService = likeService;
-        this.userService = userService;
-    }
-
     @Transactional
-    public void createPost(CreatePostCommand command) {
-        postService.createPost(command);
+    public void createPost(PrincipalProvider provider, CreatePostCommand command) {
+        postService.createPost(provider.userId(), command);
     }
 
     public PostListResponse getAllPosts(PageOffset pageOffset, BoardType boardType) {
@@ -63,18 +60,18 @@ public class PostFacade {
     }
 
     @Transactional
-    public void updatePost(Long postId, UpdatePostCommand command) {
-        postService.updatePost(postId, command);
+    public void updatePost(PrincipalProvider provider, Long postId, UpdatePostCommand command) {
+        postService.updatePost(provider.userId(), postId, command);
     }
 
     @Transactional
-    public void deletePost(Long postId) {
-        postService.deletePost(postId);
+    public void deletePost(PrincipalProvider provider, Long postId) {
+        postService.deletePost(provider.userId(), postId);
     }
 
     @Transactional
-    public boolean toggleLike(Long postId, Long userId) {
-        return likeService.toggleLike(postId, userId);
+    public boolean toggleLike(PrincipalProvider provider, Long postId) {
+        return likeService.toggleLike(postId, provider.userId());
     }
 
     private Map<Long, User> fetchAuthorMap(List<Post> posts) {

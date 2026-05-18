@@ -1,7 +1,9 @@
 package org.sopt.domain.post.code;
 
+import lombok.Getter;
 import org.sopt.common.code.SuccessCode;
 
+@Getter
 public enum PostSuccessCode implements SuccessCode {
     POST_CREATED("게시글 작성 완료!"),
     POST_UPDATED("게시글 수정 완료!"),
@@ -16,7 +18,4 @@ public enum PostSuccessCode implements SuccessCode {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
 }
