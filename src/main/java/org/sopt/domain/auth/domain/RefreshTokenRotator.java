@@ -13,7 +13,7 @@ public class RefreshTokenRotator {
     @Value("${security.jwt.refresh-token-expires-in-seconds:1209600}")
     private long refreshTokenExpiresInSeconds;
 
-    public void rotate(Long userId, String newToken) {
+    public void rotate(final Long userId, final String newToken) {
         RefreshToken refreshToken = refreshTokenReader.readOrNull(userId);
 
         if (refreshToken != null) {

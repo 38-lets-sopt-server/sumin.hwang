@@ -13,12 +13,12 @@ public class RefreshToken {
     private String token;
     private LocalDateTime expiresAt;
 
-    public void rotate(String newToken, long expiresInSeconds) {
+    public void rotate(final String newToken, final long expiresInSeconds) {
         this.token = newToken;
         this.expiresAt = LocalDateTime.now().plusSeconds(expiresInSeconds);
     }
 
-    public static RefreshToken create(Long userId, String token, long expiresInSeconds) {
+    public static RefreshToken create(final Long userId, final String token, final long expiresInSeconds) {
         return new RefreshToken(null, userId, token, LocalDateTime.now().plusSeconds(expiresInSeconds));
     }
 }

@@ -22,4 +22,10 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
         return refreshTokenJpaRepository.findByUserId(userId)
                 .map(RefreshTokenJpaEntity::toDomain);
     }
+
+    @Override
+    public Optional<RefreshToken> findByToken(String token) {
+        return refreshTokenJpaRepository.findByToken(token)
+                .map(RefreshTokenJpaEntity::toDomain);
+    }
 }
