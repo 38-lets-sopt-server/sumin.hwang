@@ -47,9 +47,14 @@ public class AuthService {
     }
 
     @Transactional
-    public void logout(Long userId, String accessToken) {
+    public void logout(final Long userId, final String accessToken) {
         refreshTokenDeleter.delete(userId);
         blacklistHandler.add(accessToken);
+    }
+
+    @Transactional
+    public AuthTokens loginWithOAuth2(final Long userId, final String email) {
+        return issueTokens(userId, email);
     }
 
     private AuthTokens issueTokens(final Long userId, final String email) {
