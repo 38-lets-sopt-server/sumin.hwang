@@ -2,6 +2,8 @@ package org.sopt.domain.auth.facade;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.sopt.common.exception.BusinessException;
+import org.sopt.domain.auth.code.AuthErrorCode;
 import org.sopt.domain.auth.controller.dto.LoginResponse;
 import org.sopt.domain.auth.controller.dto.TokenReissueResponse;
 import org.sopt.domain.auth.service.AuthService;
