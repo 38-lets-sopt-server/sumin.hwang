@@ -28,4 +28,9 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
         return refreshTokenJpaRepository.findByToken(token)
                 .map(RefreshTokenJpaEntity::toDomain);
     }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        refreshTokenJpaRepository.deleteByUserId(userId);
+    }
 }
