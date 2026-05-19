@@ -1,6 +1,7 @@
 package org.sopt.domain.post.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.sopt.common.dto.CommonResponse;
 import org.sopt.domain.post.controller.dto.request.CreatePostRequest;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface PostApi {
 
     @Operation(summary = "게시글 작성", description = "새로운 게시글을 생성합니다.")
-    CommonResponse<Void> createPost(PrincipalProvider provider, @RequestBody CreatePostRequest request);
+    CommonResponse<Void> createPost(@Parameter(hidden = true) PrincipalProvider provider, @RequestBody CreatePostRequest request);
 
     @Operation(summary = "게시글 목록 조회", description = "게시판 종류, 페이지 등에 따른 게시글 목록을 조회합니다.")
     CommonResponse<PostListResponse> getAllPosts(
@@ -37,11 +38,11 @@ public interface PostApi {
     CommonResponse<PostResponse> getPost(@PathVariable Long postId);
 
     @Operation(summary = "게시글 수정", description = "게시글 ID로 게시글 제목, 내용, 익명 여부를 수정합니다.")
-    CommonResponse<Void> updatePost(PrincipalProvider provider, @PathVariable Long postId, @RequestBody UpdatePostRequest request);
+    CommonResponse<Void> updatePost(@Parameter(hidden = true) PrincipalProvider provider, @PathVariable Long postId, @RequestBody UpdatePostRequest request);
 
     @Operation(summary = "게시글 삭제", description = "게시글 ID로 게시글을 조회합니다.")
-    CommonResponse<Void> deletePost(PrincipalProvider provider, @PathVariable Long postId);
+    CommonResponse<Void> deletePost(@Parameter(hidden = true) PrincipalProvider provider, @PathVariable Long postId);
 
     @Operation(summary = "게시글 좋아요 토글", description = "게시글 ID로 좋아요를 토글합니다. 응답의 liked 값으로 현재 상태를 알 수 있습니다. (userId는 인증 적용 전 임시로 붙여두었습니다.)")
-    CommonResponse<LikeToggleResponse> toggleLike(PrincipalProvider provider, @PathVariable Long postId);
+    CommonResponse<LikeToggleResponse> toggleLike(@Parameter(hidden = true) PrincipalProvider provider, @PathVariable Long postId);
 }
