@@ -38,7 +38,7 @@ public class PostFacade {
     public PostListResponse getAllPosts(PageOffset pageOffset, BoardType boardType) {
         PageResult<Post> posts = postService.getAllPosts(pageOffset, boardType);
         Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
-        Map<Long, User> authorMap = fetchAuthorMap(posts.contents());
+        Map<Long, User> authorMap = readAuthorMap(posts.contents());
 
         return PostListResponse.of(posts, authorMap, likeMap);
     }
@@ -46,7 +46,7 @@ public class PostFacade {
     public PostListResponse searchPosts(String keyword, PageOffset pageOffset) {
         PageResult<Post> posts = postService.searchPosts(keyword, pageOffset);
         Map<Long, Long> likeMap = likeService.countLikes(posts.contents());
-        Map<Long, User> authorMap = fetchAuthorMap(posts.contents());
+        Map<Long, User> authorMap = readAuthorMap(posts.contents());
 
         return PostListResponse.of(posts, authorMap, likeMap);
     }
@@ -74,7 +74,7 @@ public class PostFacade {
         return likeService.toggleLike(postId, provider.userId());
     }
 
-    private Map<Long, User> fetchAuthorMap(List<Post> posts) {
+    private Map<Long, User> readAuthorMap(List<Post> posts) {
         Set<Long> authorIds = posts
                 .stream()
                 .map(Post::getAuthorId)
