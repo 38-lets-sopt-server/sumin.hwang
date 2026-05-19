@@ -1,6 +1,8 @@
 package org.sopt.domain.user.persistence;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +12,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 import org.sopt.common.entity.BaseTimeEntity;
 import org.sopt.domain.user.domain.User;
+import org.sopt.security.oauth2.OAuth2Provider;
+import org.springframework.stereotype.Component;
 
 @Getter
 @Entity(name = "User")
@@ -17,6 +21,7 @@ import org.sopt.domain.user.domain.User;
 @SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?")
 public class UserJpaEntity extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,30 +32,42 @@ public class UserJpaEntity extends BaseTimeEntity {
 
     private String password;
 
-    protected UserJpaEntity() {}
+    @Enumerated(EnumType.STRING)
+    private OAuth2Provider oAuth2Provider;
 
-    public UserJpaEntity(String nickname, String email, String password) {
-        this.nickname = nickname;
-        this.email = email;
-        this.password = password;
+    private String oAuth2Id;
+
+    protected UserJpaEntity() {
     }
 
-    private UserJpaEntity(Long id, String nickname, String email, String password) {
+    private UserJpaEntity(
+            Long id,
+            String nickname,
+            String email,
+            String password,
+            OAuth2Provider oAuth2Provider,
+            String oAuth2Id
+    ) {
         this.id = id;
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.oAuth2Provider = oAuth2Provider;
+        this.oAuth2Id = oAuth2Id;
     }
 
     public User toDomain() {
-        return User.createWithId(id, nickname, email, password);
-    }
-
-    public static UserJpaEntity create(String nickname, String email, String password) {
-        return new UserJpaEntity(nickname, email, password);
+        return User.createWithId(id, nickname, email, password, oAuth2Provider, oAuth2Id);
     }
 
     public static UserJpaEntity from(User user) {
-        return new UserJpaEntity(user.getId(), user.getNickname(), user.getEmail(), user.getPassword());
+        return new UserJpaEntity(
+                user.getId(),
+                user.getNickname(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getOAuth2Provider(),
+                user.getOAuth2Id()
+        );
     }
 }
