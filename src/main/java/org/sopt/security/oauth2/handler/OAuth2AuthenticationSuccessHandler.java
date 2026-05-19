@@ -9,6 +9,7 @@ import org.sopt.domain.auth.service.AuthService;
 import org.sopt.domain.auth.service.vo.AuthTokens;
 import org.sopt.domain.user.domain.User;
 import org.sopt.domain.user.service.UserService;
+import org.sopt.security.RefreshTokenCookie;
 import org.sopt.security.oauth2.OAuth2Authentication;
 import org.sopt.security.oauth2.userinfo.OAuth2UserInfo;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +32,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Value("${security.jwt.refresh-token-expires-in-seconds:1209600}")
     private long refreshTokenExpiresInSeconds;
 
-    private static final String COOKIE_REFRESH_TOKEN = "refreshToken";
-
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest request,
@@ -45,16 +44,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         User user = userService.findOrCreateByOAuth2(userInfo);
         AuthTokens tokens = authService.loginWithOAuth2(user.getId(), user.getEmail());
 
-        ResponseCookie refreshTokenCookie = ResponseCookie.from(COOKIE_REFRESH_TOKEN, tokens.refreshToken())
-                .httpOnly(true)
-                .path("/")
-                //로컬 테스트용 설정 Secure=false; SameSite=Lax
-                .secure(false)
-                .sameSite("Lax")
-                .maxAge(refreshTokenExpiresInSeconds)
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString());
+        ResponseCookie cookie = RefreshTokenCookie.create(tokens.refreshToken(), refreshTokenExpiresInSeconds);
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         String redirectUri = UriComponentsBuilder
                 .fromUriString(clientRedirectUri)

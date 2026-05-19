@@ -2,11 +2,8 @@ package org.sopt.domain.auth.facade;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.sopt.common.exception.BusinessException;
-import org.sopt.domain.auth.code.AuthErrorCode;
-import org.sopt.domain.auth.controller.dto.LoginResponse;
-import org.sopt.domain.auth.controller.dto.TokenReissueResponse;
 import org.sopt.domain.auth.service.AuthService;
+import org.sopt.domain.auth.service.vo.AuthTokens;
 import org.sopt.security.jwt.AccessTokenExtractor;
 import org.sopt.security.provider.PrincipalProvider;
 import org.springframework.stereotype.Component;
@@ -21,13 +18,13 @@ public class AuthFacade {
     private final AccessTokenExtractor accessTokenExtractor;
 
     @Transactional
-    public LoginResponse login(final String email, final String password) {
-        return LoginResponse.from(authService.login(email, password));
+    public AuthTokens login(final String email, final String password) {
+        return authService.login(email, password);
     }
 
     @Transactional
-    public TokenReissueResponse reissue(final String refreshToken) {
-        return TokenReissueResponse.from(authService.reissueTokens(refreshToken));
+    public AuthTokens reissue(final String refreshToken) {
+        return authService.reissueTokens(refreshToken);
     }
 
     @Transactional
