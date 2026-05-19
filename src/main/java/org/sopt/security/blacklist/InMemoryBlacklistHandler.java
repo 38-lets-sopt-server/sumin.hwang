@@ -1,6 +1,7 @@
 package org.sopt.security.blacklist;
 
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -8,9 +9,12 @@ public class InMemoryBlacklistHandler implements BlacklistHandler {
 
     private final ConcurrentHashMap<String, Long> blacklist = new ConcurrentHashMap<>();
 
+    @Value("${security.jwt.access-token-expires-in-seconds}")
+    private long accessTokenExpiresInSeconds;
+
     @Override
     public void add(String token) {
-        blacklist.put(token, System.currentTimeMillis());
+        blacklist.put(token, System.currentTimeMillis() + accessTokenExpiresInSeconds * 1000);
     }
 
     @Override
