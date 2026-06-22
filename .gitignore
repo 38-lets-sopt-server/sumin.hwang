@@ -42,3 +42,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+application-local.yml
+
+### Test Client ###
+test-client/

@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface UserRepository {
 
+    User save(User user);
+
     Optional<User> findById(Long id);
 
     Map<Long, User> findAllByIdsAsMap(Set<Long> ids);

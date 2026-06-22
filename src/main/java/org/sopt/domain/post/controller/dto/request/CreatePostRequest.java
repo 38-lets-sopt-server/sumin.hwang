@@ -11,13 +11,12 @@ public record CreatePostRequest(
         @Max(value = 50, message = ValidationMessage.TITLE_TOO_LONG)
         String title,
         String content,
-        Long authorId,
         BoardType boardType,
         boolean isAnonymous,
         boolean isQuestion
 ) {
 
     public CreatePostCommand toCommand() {
-        return CreatePostCommand.of(title, content, authorId, boardType, isAnonymous, isQuestion);
+        return CreatePostCommand.of(title, content, boardType, isAnonymous, isQuestion);
     }
 }
